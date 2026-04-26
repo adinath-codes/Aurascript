@@ -1,5 +1,12 @@
 #include "lexer.h"
 #include <memory>
+#include <vector>
+class Program {
+private:
+  std::vector<std::shared_ptr<LowkeyBranch>> branches;
+
+public:
+};
 
 class Statements {
 private:
@@ -9,17 +16,18 @@ public:
     Token tok;
     return tok;
   }
-  Statements(/* args */);
-  ~Statements();
 };
 // ASSIGNMENT STATEMENT
-class LowkeyStatement : public Statements {
+class LowkeyBranch : public Statements {
 private:
   /* data */
 public:
-  Token name;
-  std::shared_ptr<Ident> ident;
-  std::shared_ptr<Expr> value;
+  //   Token token;
+  std::string token;
+  //   std::shared_ptr<Ident> ident;
+  std::string ident;
+  //   std::shared_ptr<Expr> value;
+  std::string exp;
 
   Token tokenLiteral() override {
     Token tok;
