@@ -1,7 +1,9 @@
 #pragma once
+
 #include "opt.h"
 #include <string>
 using std::string;
+
 enum class TokenTypes {
   // OPERATORS: =,+,-,*,/,\0
   BECOMES,
@@ -26,7 +28,6 @@ enum class TokenTypes {
   IDENTIFIER,
   BADVIBES
 };
-
 struct Token {
   TokenTypes type;
   string literal;
@@ -38,19 +39,21 @@ private:
   int position;
   int readPos;
   char currChar;
-  bool isVldLetter(char ch) {
+  bool isValidLetter(char ch) {
     // return ((ch|32)-'a')<=('z'-'a')
     return IS_VALID_CHAR_LUT[(unsigned char)ch] &
            IS_ALPHA; // Used a LUT for high optimisation
   };
-  bool isVldDigit(char ch) {
+  bool isValidDigit(char ch) {
     // return (unsigned char)(ch - '0') <= 9; // Used a LUT for high
     // optimisation
     return IS_VALID_CHAR_LUT[(unsigned char)ch] &
            IS_NUMBER; // Used a LUT for high optimisation
   };
-
-  void skpWhiteSpace();
+  bool isWhiteSpace(char ch) {
+    return IS_VALID_CHAR_LUT[(unsigned char)ch] & IS_WHITE_SPACE;
+  }
+  void skipWhiteSpace();
   string readWord();
   string readNumber();
   TokenTypes lookupWords(string identifier);

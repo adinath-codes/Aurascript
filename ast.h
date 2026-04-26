@@ -1,17 +1,13 @@
+#pragma once
 #include "lexer.h"
 #include <memory>
 #include <vector>
-class Program {
-private:
-  std::vector<std::shared_ptr<LowkeyBranch>> branches;
-
-public:
-};
 
 class Statements {
 private:
   /* data */
 public:
+  virtual ~Statements() = default;
   virtual Token tokenLiteral() {
     Token tok;
     return tok;
@@ -40,18 +36,8 @@ public:
 // LOOPING STATEMENT
 
 // JUMP STATEMENT
-class Expr {
-private:
-  /* data */
-public:
-  Expr(/* args */);
-  ~Expr();
-};
+class Program {
 
-class Ident {
-private:
-  /* data */
 public:
-  Ident(/* args */);
-  ~Ident();
+  std::vector<std::shared_ptr<LowkeyBranch>> branches;
 };

@@ -1,5 +1,7 @@
 #include "lexer.h"
+#include <iostream>
 #include <unordered_map>
+
 using std::string;
 using std::unordered_map;
 static unordered_map<string, TokenTypes> keywords = {
@@ -39,15 +41,9 @@ void Lexer::readNextChar() {
   readPos++;
 };
 
-void Lexer::skpWhiteSpace() {
-  while (IS_VALID_CHAR_LUT[(unsigned char)currChar] & IS_WHITE_SPACE) {
-    readNextChar();
-  }
-}
-
 string Lexer::readWord() {
   int startPos = position;
-  while (isVldLetter(currChar)) {
+  while (isValidLetter(currChar)) {
     readNextChar();
   }
   return input.substr(startPos, position - startPos);
@@ -55,10 +51,17 @@ string Lexer::readWord() {
 
 string Lexer::readNumber() {
   int startPos = position;
-  while (isVldDigit(currChar)) {
+  while (isValidDigit(currChar)) {
     readNextChar();
   }
   return input.substr(startPos, position - startPos);
+}
+
+void Lexer::skipWhiteSpace() {
+  while (currChar == ' ' || currChar == '\t' || currChar == '\n' ||
+         currChar == '\r') {
+    readNextChar();
+  }
 }
 
 TokenTypes Lexer::lookupWords(string identifier) {
@@ -70,7 +73,7 @@ TokenTypes Lexer::lookupWords(string identifier) {
 
 Token Lexer::nextToken() {
   Token tok;
-  skpWhiteSpace();
+  skipWhiteSpace();
   switch (currChar) {
   case '=':
     tok.type = TokenTypes::BECOMES;
@@ -103,11 +106,11 @@ Token Lexer::nextToken() {
     break;
 
   default:
-    if (isVldLetter(currChar)) {
+    if (isValidLetter(currChar)) {
       tok.literal = readWord();
       tok.type = lookupWords(tok.literal);
       return tok;
-    } else if (isVldDigit(currChar)) {
+    } else if (isValidDigit(currChar)) {
       tok.literal = readNumber();
       tok.type = TokenTypes::NUMBER;
       return tok;
