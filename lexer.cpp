@@ -4,6 +4,7 @@
 
 using std::string;
 using std::unordered_map;
+
 static unordered_map<string, TokenTypes> keywords = {
     {"lowkey", TokenTypes::LOWKEY},
     {"nocap", TokenTypes::NOCAP},
@@ -55,6 +56,16 @@ string Lexer::readNumber() {
   return input.substr(startPos, position - startPos);
 }
 
+string Lexer::readString() {
+  int startPos = position;
+  readNextChar();
+  while (currChar != '"') {
+    readNextChar();
+  }
+  readNextChar();
+  return input.substr(startPos, position - startPos);
+}
+
 void Lexer::skipWhiteSpace() {
   while (currChar == ' ' || currChar == '\t' || currChar == '\n' ||
          currChar == '\r') {
@@ -64,14 +75,15 @@ void Lexer::skipWhiteSpace() {
 
 TokenTypes Lexer::lookupWords(string identifier) {
   if (keywords.count(identifier)) {
-    return keywords[identifier];
+    return keywords[identifier]; // looks whether it is a keyword ,
   }
-  return TokenTypes::IDENTIFIER;
+  return TokenTypes::IDENTIFIER; // else it becomes a identifier
 }
 
 Token Lexer::nextToken() {
   Token tok;
   skipWhiteSpace();
+  // DEFINING THE VALID TOKENS
   switch (currChar) {
   case '=':
     tok.type = TokenTypes::BECOMES;
@@ -102,6 +114,10 @@ Token Lexer::nextToken() {
     tok.type = TokenTypes::GG;
     tok.literal = "\0";
     break;
+  case '"':
+    tok.literal = readString();
+    tok.type = TokenTypes::STRING;
+    return tok;
 
   default:
     if (isValidLetter(currChar)) {

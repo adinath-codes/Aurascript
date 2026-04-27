@@ -18,6 +18,12 @@ std::string tokenTypeToString(TokenTypes type) {
     return "BECOMES";
   case TokenTypes::NUMBER:
     return "NUMBER";
+  case TokenTypes::STRING:
+    return "STRING";
+  case TokenTypes::CAP:
+    return "CAP";
+  case TokenTypes::NOCAP:
+    return "NOCAP";
   case TokenTypes::FR:
     return "FR";
   case TokenTypes::BADVIBES:
@@ -66,8 +72,15 @@ public:
       return nullptr;
     }
     setNextToksToParse();
-    if (currTok.type != TokenTypes::NUMBER) {
+    switch (currTok.type) {
+    case (TokenTypes::NUMBER):
+    case (TokenTypes::CAP):
+    case (TokenTypes::NOCAP):
+    case (TokenTypes::STRING):
+      break;
+    default:
       return nullptr;
+      break;
     }
     lkb->exp = currTok.literal;
     setNextToksToParse();

@@ -14,17 +14,16 @@ enum class TokenTypes {
   GG,
   // KEYWORDS: let,true,false,if,else,while,print,return,end
   LOWKEY,
-  NOCAP,
-  CAP,
   SUS,
   FLOP,
   KEEPGRINDING,
   YAP,
   FLEX,
   GHOSTING,
-  // DATATYPES : number,bool,string
+  // DATATYPES : number,bool,string (OPTIMSED WITH BIN)
   NUMBER,
-  BOOL,
+  NOCAP,
+  CAP,
   STRING,
   // OTHERS: ;,identifier,numbers,EOF, ILLEGAL(none of them)
   FR,
@@ -59,6 +58,7 @@ private:
   void skipWhiteSpace();
   string readWord();
   string readNumber();
+  string readString();
   TokenTypes lookupWords(string identifier);
 
 public:

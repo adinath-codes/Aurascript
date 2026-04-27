@@ -1,5 +1,7 @@
 #pragma once
+#include <memory>
 #include <string>
+
 enum class OBJECT_TYPES { INTEGER_OBJ, BOOL_OBJ, STRING_OBJ, NULL_OBJ };
 
 class ObjectOutline {
@@ -24,7 +26,7 @@ public:
   bool value;
   BoolObject(bool v) : value(v) {}
   OBJECT_TYPES type() override { return OBJECT_TYPES::BOOL_OBJ; }
-  std::string viewValue() override { return value ? "nocap" : "cap"; }
+  std::string viewValue() override { return value ? "true" : "false"; }
 };
 
 class StringObject : public ObjectOutline {
@@ -40,3 +42,7 @@ public:
   OBJECT_TYPES type() override { return OBJECT_TYPES::NULL_OBJ; }
   std::string viewValue() override { return "NULL"; }
 };
+// exterm centrally defines them so no reductancy on multiple call
+extern const std::shared_ptr<NullObject> GLOBAL_NULL_OBJ;
+extern const std::shared_ptr<BoolObject> GLOBAL_TRUE_OBJ;
+extern const std::shared_ptr<BoolObject> GLOBAL_FALSE_OBJ;
