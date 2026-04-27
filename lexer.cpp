@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "lib/lexer.h"
 #include <iostream>
 #include <unordered_map>
 
@@ -14,14 +14,12 @@ static unordered_map<string, TokenTypes> keywords = {
     {"yap", TokenTypes::YAP},
     {"flex", TokenTypes::FLEX},
     {"fr", TokenTypes::FR},
-    {"ghost", TokenTypes::GHOST},
+    {"ghosting", TokenTypes::GHOSTING},
     {"becomes", TokenTypes::BECOMES},
     {"hasaura", TokenTypes::HASAURA},
     {"loseaura", TokenTypes::LOSEAURA},
     {"stacked", TokenTypes::STACKED},
-    {"rationed", TokenTypes::RATIOED},
-    {"ghost", TokenTypes::GHOST},
-};
+    {"rationed", TokenTypes::RATIOED}};
 
 Lexer::Lexer(string sourceCode) {
   input = sourceCode;
