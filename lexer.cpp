@@ -15,12 +15,12 @@ static unordered_map<string, TokenTypes> keywords = {
     {"yap", TokenTypes::YAP},
     {"flex", TokenTypes::FLEX},
     {"fr", TokenTypes::FR},
-    {"ghosting", TokenTypes::GHOSTING},
+    {"ghosting", TokenTypes::GHOST},
     {"becomes", TokenTypes::BECOMES},
     {"hasaura", TokenTypes::HASAURA},
     {"loseaura", TokenTypes::LOSEAURA},
     {"stacked", TokenTypes::STACKED},
-    {"rationed", TokenTypes::RATIOED}};
+    {"ratioed", TokenTypes::RATIOED}};
 
 Lexer::Lexer(string sourceCode) {
   input = sourceCode;
@@ -113,6 +113,11 @@ Token Lexer::nextToken() {
   case '\0':
     tok.type = TokenTypes::GG;
     tok.literal = "\0";
+    break;
+
+  case '\n':
+    tok.type = TokenTypes::GHOST;
+    tok.literal = "\n";
     break;
   case '"':
     tok.literal = readString();

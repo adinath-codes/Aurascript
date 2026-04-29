@@ -22,8 +22,7 @@ public:
   std::string token;
   //   std::shared_ptr<Ident> ident;
   std::string ident;
-  //   std::shared_ptr<Expr> value;
-  std::string exp;
+  std::shared_ptr<ObjectOutline> exp;
 
   Token tokenLiteral() override {
     Token tok;
@@ -36,7 +35,7 @@ public:
 // LOOPING STATEMENT
 
 // JUMP STATEMENT
-class Program {
+class AST {
 
 public:
   std::vector<std::shared_ptr<LowkeyBranch>> branches;

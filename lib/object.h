@@ -1,8 +1,15 @@
 #pragma once
+#include "lexer.h"
 #include <memory>
 #include <string>
 
-enum class OBJECT_TYPES { INTEGER_OBJ, BOOL_OBJ, STRING_OBJ, NULL_OBJ };
+enum class OBJECT_TYPES {
+  INTEGER_OBJ,
+  BOOL_OBJ,
+  STRING_OBJ,
+  NULL_OBJ,
+  INFIX_OBJ
+};
 
 class ObjectOutline {
 public:
@@ -42,6 +49,19 @@ public:
   OBJECT_TYPES type() override { return OBJECT_TYPES::NULL_OBJ; }
   std::string viewValue() override { return "NULL"; }
 };
+
+class InfixNode : public ObjectOutline {
+public:
+  std::string Operator;
+  TokenTypes operatorType;
+  std::shared_ptr<ObjectOutline> Left;
+  std::shared_ptr<ObjectOutline> Right;
+  OBJECT_TYPES type() override { return OBJECT_TYPES::INFIX_OBJ; }
+  std::string viewValue() override {
+    return Left->viewValue() + " " + Operator + " " + Right->viewValue();
+  }
+};
+
 // exterm centrally defines them so no reductancy on multiple call
 extern const std::shared_ptr<NullObject> GLOBAL_NULL_OBJ;
 extern const std::shared_ptr<BoolObject> GLOBAL_TRUE_OBJ;

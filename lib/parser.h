@@ -26,6 +26,8 @@ std::string tokenTypeToString(TokenTypes type) {
     return "NOCAP";
   case TokenTypes::FR:
     return "FR";
+  case TokenTypes::GHOST:
+    return "GHOST";
   case TokenTypes::BADVIBES:
     return "BADVIBES";
   case TokenTypes::GG:
@@ -56,10 +58,83 @@ public:
     currTok = nextTok;
     nextTok = lex.nextToken();
   }
+  const std::shared_ptr<NullObject> GLOBAL_NULL_OBJ =
+      std::make_shared<NullObject>();
+  const std::shared_ptr<BoolObject> GLOBAL_TRUE_OBJ =
+      std::make_shared<BoolObject>(true);
+  const std::shared_ptr<BoolObject> GLOBAL_FALSE_OBJ =
+      std::make_shared<BoolObject>(false);
+  t_Obj_ptr ObjectEvaluator() {
+    // BOOL EVAL
+    if (currTok.type == TokenTypes::NOCAP) {
+      return GLOBAL_TRUE_OBJ;
+    }
+    if (currTok.type == TokenTypes::CAP) {
+      return GLOBAL_FALSE_OBJ;
+    }
+    // STRING EVAL
+    else if (currTok.literal.length() > 1 && currTok.literal.front() == '"' &&
+             currTok.literal.back() == '"') {
+      const std::string pureString =
+          currTok.literal.substr(1, currTok.literal.length() - 2);
+      return std::make_shared<StringObject>(pureString);
+    } else {
+      try {
+        // NUMBER EVAL
+        long long num = std::stoll(currTok.literal);
+        return std::make_shared<IntObject>(num);
+      } catch (std::string err) {
+        // NULL EVAL
+        std::cout << "[WARNING]:" << err;
+        return GLOBAL_NULL_OBJ;
+      }
+    }
+  }
+
+  int getPriority(TokenTypes type) {
+    switch (type) {
+    case TokenTypes::BECOMES:
+      return 5;
+    case TokenTypes::HASAURA:
+    case TokenTypes::LOSEAURA:
+      return 10;
+    case TokenTypes::STACKED:
+    case TokenTypes::RATIOED:
+      return 20;
+
+    default:
+      return 0;
+    }
+  }
+
+  t_Obj_ptr parseExp(int prevPower) {
+    auto leftNode = ObjectEvaluator();
+    if (!leftNode) {
+      return nullptr;
+    }
+    setNextToksToParse();
+    while (getPriority(currTok.type) > prevPower) {
+      // FOREG: IF IT IS MULT THEN NEW INFIX NODE IS CREATED
+      Token opTok = currTok;
+      setNextToksToParse();
+      auto infixNode = std::make_shared<InfixNode>();
+      infixNode->Left = leftNode;
+      infixNode->Operator = opTok.literal;
+      infixNode->operatorType = opTok.type;
+      // RECURSION:
+      int nextPower = getPriority(opTok.type);
+      if (currTok.type == TokenTypes::BECOMES) {
+        nextPower -= 1;
+      }
+      infixNode->Right = parseExp(nextPower);
+      leftNode = infixNode;
+    }
+    return leftNode;
+  }
 
   std::shared_ptr<LowkeyBranch> parseLowkeyBranch() {
-    // lowkey -> identifier (aVar) -> becomes/'=' -> exp -> fr::: lowekey aVar
-    // becomes 56+89 fr
+    // lowkey -> identifier (aVar) -> becomes/'=' -> exp -> fr::: lowekey
+    // aVarbecomes 56+89 fr
     auto lkb = std::make_shared<LowkeyBranch>();
     lkb->token = tokenTypeToString(TokenTypes::LOWKEY);
     setNextToksToParse();
@@ -80,15 +155,11 @@ public:
       break;
     default:
       return nullptr;
-      break;
     }
-    lkb->exp = currTok.literal;
-    setNextToksToParse();
-
-    if (currTok.type != TokenTypes::FR) {
+    lkb->exp = parseExp(0);
+    if (currTok.type != TokenTypes::FR) { // TODO: add or ghost
       return nullptr;
     }
-
     setNextToksToParse();
     return lkb;
   }

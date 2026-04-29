@@ -12,14 +12,14 @@ enum class TokenTypes {
   STACKED,
   RATIOED,
   GG,
-  // KEYWORDS: let,true,false,if,else,while,print,return,end
+  // KEYWORDS: let,true,false,if,else,while,print,return,\n
   LOWKEY,
   SUS,
   FLOP,
   KEEPGRINDING,
   YAP,
   FLEX,
-  GHOSTING,
+  GHOST,
   // DATATYPES : number,bool,string (OPTIMSED WITH BIN)
   NUMBER,
   NOCAP,
@@ -47,10 +47,10 @@ private:
            IS_ALPHA; // Used a LUT for high optimisation
   };
   bool isValidDigit(char ch) {
-    // return (unsigned char)(ch - '0') <= 9; // Used a LUT for high
-    // optimisation
-    return IS_VALID_CHAR_LUT[(unsigned char)ch] &
-           IS_NUMBER; // Used a LUT for high optimisation
+    return (unsigned char)(ch - '0') <= 9;
+    // return ch >= '0' && ch <= '9';
+    // return IS_VALID_CHAR_LUT[(unsigned char)ch] &
+    //  IS_NUMBER; // Used a LUT for high optimisation
   };
   bool isWhiteSpace(char ch) {
     return IS_VALID_CHAR_LUT[(unsigned char)ch] & IS_WHITE_SPACE;
