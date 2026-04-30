@@ -8,7 +8,10 @@ enum class OBJECT_TYPES {
   BOOL_OBJ,
   STRING_OBJ,
   NULL_OBJ,
-  INFIX_OBJ
+  INFIX_OBJ,
+  IDENT_OBJ,
+  YAP_STATEMENT,
+  LOWKEY_STATEMENT
 };
 
 class ObjectOutline {
@@ -41,6 +44,14 @@ public:
   std::string value;
   StringObject(std::string v) : value(v) {}
   OBJECT_TYPES type() override { return OBJECT_TYPES::STRING_OBJ; }
+  std::string viewValue() override { return value; }
+};
+
+class IdentObject : public ObjectOutline {
+public:
+  std::string value;
+  IdentObject(std::string v) : value(v) {}
+  OBJECT_TYPES type() override { return OBJECT_TYPES::IDENT_OBJ; }
   std::string viewValue() override { return value; }
 };
 

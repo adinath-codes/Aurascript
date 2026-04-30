@@ -1,16 +1,17 @@
 #pragma once
 #include "lexer.h"
+#include "object.h"
 #include <memory>
 #include <vector>
 
-class Statements {
+class Statements : public ObjectOutline {
 private:
   /* data */
 public:
   virtual ~Statements() = default;
   virtual Token tokenLiteral() {
     Token tok;
-    return tok;
+    return Token();
   }
 };
 // ASSIGNMENT STATEMENT
@@ -28,6 +29,21 @@ public:
     Token tok;
     return tok;
   }
+  OBJECT_TYPES type() override { return OBJECT_TYPES::LOWKEY_STATEMENT; }
+  std::string viewValue() override { return ident + " = " + exp->viewValue(); }
+};
+
+// YAP STATEMENT
+class YapBranch : public Statements {
+public:
+  std::shared_ptr<ObjectOutline> exp;
+
+  Token tokenLiteral() override {
+    Token tok;
+    return tok;
+  }
+  OBJECT_TYPES type() override { return OBJECT_TYPES::YAP_STATEMENT; }
+  std::string viewValue() override { return "yap " + exp->viewValue() + " fr"; }
 };
 
 // CONDITIONAL STATEMENT
@@ -38,5 +54,5 @@ public:
 class AST {
 
 public:
-  std::vector<std::shared_ptr<LowkeyBranch>> branches;
+  std::vector<std::shared_ptr<ObjectOutline>> branches;
 };

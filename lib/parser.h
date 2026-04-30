@@ -6,7 +6,7 @@
 #include <vector>
 
 struct LowkeyBranch;
-using t_TreeVect = std::vector<std::shared_ptr<LowkeyBranch>>;
+using t_TreeVect = std::vector<std::shared_ptr<ObjectOutline>>;
 
 std::string tokenTypeToString(TokenTypes type) {
   switch (type) {
@@ -65,6 +65,10 @@ public:
   const std::shared_ptr<BoolObject> GLOBAL_FALSE_OBJ =
       std::make_shared<BoolObject>(false);
   t_Obj_ptr ObjectEvaluator() {
+    // IDENTIFIER EVAL
+    if (currTok.type == TokenTypes::IDENTIFIER) {
+      return std::make_shared<IdentObject>(currTok.literal);
+    }
     // BOOL EVAL
     if (currTok.type == TokenTypes::NOCAP) {
       return GLOBAL_TRUE_OBJ;
@@ -152,6 +156,7 @@ public:
     case (TokenTypes::CAP):
     case (TokenTypes::NOCAP):
     case (TokenTypes::STRING):
+    case (TokenTypes::IDENTIFIER):
       break;
     default:
       return nullptr;
@@ -164,6 +169,19 @@ public:
     return lkb;
   }
 
+  std::shared_ptr<YapBranch> parseYapBranch() {
+    auto yapNode = std::make_shared<YapBranch>();
+    setNextToksToParse();
+    yapNode->exp = parseExp(0);
+    if (currTok.type != TokenTypes::FR) {
+      std::cout
+          << "[SYNTAX BUSTED]: Bruh, you forgot the 'fr' to end your yap.\n";
+      return nullptr;
+    }
+    setNextToksToParse();
+
+    return yapNode;
+  }
   t_TreeVect parseProgram() {
     while (currTok.type != TokenTypes::GG) {
       switch (currTok.type) {
@@ -172,7 +190,13 @@ public:
         if (lkBranchPtr != nullptr) {
           branchedTree.push_back(lkBranchPtr);
         }
-
+        break;
+      }
+      case TokenTypes::YAP: {
+        t_Obj_ptr yapN = parseYapBranch();
+        if (yapN != nullptr) {
+          branchedTree.push_back(yapN);
+        }
         break;
       }
       default:
