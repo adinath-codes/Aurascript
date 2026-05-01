@@ -19,7 +19,7 @@ aurascript are faster than python even though aurascript is also an interpreted 
 2. [Purpose](https://github.com/adinath-codes/Aurascript/tree/main#purpose)
 3. [Features](https://github.com/adinath-codes/Aurascript/tree/main#features)
 4. [Installation](https://github.com/adinath-codes/Aurascript/tree/main#installation)
-5. [Style Guide](https://github.com/adinath-codes/Aurascript/tree/main#style-guide)
+5. [Additional Guidelines](https://github.com/adinath-codes/Aurascript/tree/main#style-guide)
 
 # Showcase
 ```text
@@ -242,4 +242,4 @@ yap "It prints instantly because I bypassed std::cout" fr
 
 
 # Style Guide
-fuck around and find out
+fuck around and find out or DM me from my profile
