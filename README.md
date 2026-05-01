@@ -230,7 +230,7 @@ yap "It prints instantly because I bypassed std::cout" fr
 4. run the setup.bat (double click it)
 5. **Option A: Run from current directory**
 	```powershell
-	aura examples\demogame.aura
+	aura examples\demo.aura
    ```
 
 ## Examples
