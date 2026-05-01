@@ -1,11 +1,14 @@
 #include "lib/env.h"
 #include "lib/parser.h"
 #include <chrono>
+#include <cstdio>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
 
+std::stringstream myBuffer;
 const std::shared_ptr<NullObject> GLOBAL_NULL_OBJ =
     std::make_shared<NullObject>();
 const std::shared_ptr<BoolObject> GLOBAL_TRUE_OBJ =
@@ -117,7 +120,8 @@ t_Obj_ptr Evaluator(t_Obj_ptr node, Env &env) {
     auto yapStatem = std::dynamic_pointer_cast<YapBranch>(node);
     t_Obj_ptr evaledExp = Evaluator(yapStatem->exp, env);
     if (evaledExp != nullptr && evaledExp->type() != OBJECT_TYPES::NULL_OBJ) {
-      std::cout << evaledExp->viewValue() << std::endl;
+      // printf("%s\n", evaledExp->viewValue().c_str());
+      myBuffer << evaledExp->viewValue() << "\n";
     }
     return GLOBAL_NULL_OBJ;
   }
@@ -153,7 +157,7 @@ t_Obj_ptr Evaluator(t_Obj_ptr node, Env &env) {
         break;
       }
 
-      if (condResult->viewValue() != GLOBAL_TRUE_OBJ->viewValue()) {
+      if (condResult != GLOBAL_TRUE_OBJ) {
         break;
       }
       Evaluator(grindNode->body, env);
@@ -192,11 +196,12 @@ int main(int argc, char *argv[]) {
   }
   auto endTime = std::chrono::high_resolution_clock::now();
 
-  auto TotalRunTime = endTime - startTime;
-  auto msRunTime =
-      std::chrono::duration_cast<std::chrono::milliseconds>(TotalRunTime)
-          .count();
-  std::cout << "\n\n>>> PROGRAM ENDED:\n"
-            << "TOTAL TIME TAKES:" << msRunTime << "ms" << std::endl;
+  std::chrono::duration<double, std::milli> TotalRunTime = endTime - startTime;
+  // auto msRunTime =
+  //     std::chrono::duration_cast<std::chrono::milliseconds>(TotalRunTime)
+  //         .count();
+  std::cout << myBuffer.str();
+  std::cout << "\n[AURA ENGINE]: Process finished in " << std::fixed
+            << std::setprecision(4) << TotalRunTime.count() << "ms.\n";
   return 0;
 }

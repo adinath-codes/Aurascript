@@ -1,0 +1,11 @@
+lowkey base becomes 7 fr
+lowkey multiplier becomes 1 fr
+
+yap "--- 7 Times Table ---" fr
+
+keepgrinding (multiplier <= 10) {
+    yap base * multiplier fr
+    lowkey multiplier becomes multiplier + 1 fr
+}
+
+yap "--- DONE ---" fr

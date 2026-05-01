@@ -1,0 +1,11 @@
+lowkey num becomes 20 fr
+lowkey result becomes 1 fr
+
+yap "--- Factorial of 20 ---" fr
+
+keepgrinding (num > 0) {
+    lowkey result becomes result * num fr
+    lowkey num becomes num - 1 fr
+}
+
+yap result fr

@@ -1,7 +1,7 @@
 import time
 
 def run_boss_fight():
-    boss_hp = 15
+    boss_hp = 15000
     my_aura = 0
 
     print("--- FINAL BOSS FIGHT INITIATED ---")
@@ -29,4 +29,4 @@ end_time = time.perf_counter()
 
 # Convert to milliseconds
 ms_runtime = (end_time - start_time) * 1000
-print(f"\n[ENGINE]: Process finished in {ms_runtime:.4f}ms.")
+print(f"\n[PYTHON ENGINE]: Process finished in {ms_runtime:.4f}ms.")

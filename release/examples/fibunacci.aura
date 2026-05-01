@@ -1,0 +1,14 @@
+lowkey n becomes 10 fr
+lowkey a becomes 0 fr
+lowkey b becomes 1 fr
+lowkey temp becomes 0 fr
+
+yap "--- Fibonacci Sequence ---" fr
+
+keepgrinding (n > 0) {
+    yap a fr
+    lowkey temp becomes a + b fr
+    lowkey a becomes b fr
+    lowkey b becomes temp fr
+    lowkey n becomes n - 1 fr
+}
