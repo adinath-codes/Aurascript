@@ -212,4 +212,4 @@ Also from literally anywhere, builtins:
 - `demo.aura`: A sub-millisecond boss fight simulation. **This is the BIG one you SHOULD TEST.**
 
 # Style Guide
-Fuck around and find out or DM me from my profile.
+Fk around and find out or DM me from my profile.
