@@ -15,13 +15,13 @@ aurascript are faster than python even though aurascript is also an interpreted 
 | Ecosystem | None (You are on your own) | Infinite (PyPI) |
 
 # Table of Contents
-1. [Showcase](https://github.com/adinath-codes/Aurascript/edit/main/README.md#showcase)
-2. [Purpose](https://github.com/adinath-codes/Aurascript/edit/main/README.md#purpose)
-3. [Features](https://github.com/adinath-codes/Aurascript/edit/main/README.md#features)
-4. [Installation](https://github.com/adinath-codes/Aurascript/edit/main/README.md#installation)
-5. [Editor Setup](https://github.com/adinath-codes/Aurascript/edit/main/README.md#editor-setup)
-6. [Usage](https://github.com/adinath-codes/Aurascript/edit/main/README.md#usage)
-7. [Style Guide](https://github.com/adinath-codes/Aurascript/edit/main/README.md#style-guide)
+1. [Showcase](https://github.com/adinath-codes/Aurascript/tree/main#showcase)
+2. [Purpose](https://github.com/adinath-codes/Aurascript/tree/main#purpose)
+3. [Features](https://github.com/adinath-codes/Aurascript/tree/main#features)
+4. [Installation](https://github.com/adinath-codes/Aurascript/tree/main#installation)
+5. [Editor Setup](https://github.com/adinath-codes/Aurascript/tree/main#editor-setup)
+6. [Usage](https://github.com/adinath-codes/Aurascript/tree/main#usage)
+7. [Style Guide](https://github.com/adinath-codes/Aurascript/tree/main#style-guide)
 
 # Showcase
 ```text
