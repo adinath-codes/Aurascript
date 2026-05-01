@@ -19,9 +19,7 @@ aurascript are faster than python even though aurascript is also an interpreted 
 2. [Purpose](https://github.com/adinath-codes/Aurascript/tree/main#purpose)
 3. [Features](https://github.com/adinath-codes/Aurascript/tree/main#features)
 4. [Installation](https://github.com/adinath-codes/Aurascript/tree/main#installation)
-5. [Editor Setup](https://github.com/adinath-codes/Aurascript/tree/main#editor-setup)
-6. [Usage](https://github.com/adinath-codes/Aurascript/tree/main#usage)
-7. [Style Guide](https://github.com/adinath-codes/Aurascript/tree/main#style-guide)
+5. [Style Guide](https://github.com/adinath-codes/Aurascript/tree/main#style-guide)
 
 # Showcase
 ```text
