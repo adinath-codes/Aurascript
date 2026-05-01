@@ -1,8 +1,6 @@
-# AuraScript : high-performance programming Language for the GENZ
-
-*The best programming language of the era since it's named after Gen-Z slang.*<br/>
-**AURASCRIPT THE** high-performance programming Language for the GENZ is faster than python even though aurascript is also an interpreted language build with the same c++.but why?
-
+# AuraScript : High-Performance Programming Language for the GENZ
+*(Python was popular because its syntax was similar to English during the BOOMER ERA. AuraScript will be popular because its syntax is similar to English during the GENZ ERA)* *The best programming language of the era since it's named after Gen-Z slang.*<br/>
+**AURASCRIPT THE** high-performance programming language for the GENZ is faster than Python even though AuraScript is also an interpreted language built with C++. But why?
 
 ## AuraScript vs Python
 
@@ -18,10 +16,10 @@
 2. [Purpose](https://github.com/adinath-codes/Aurascript/tree/main#purpose)
 3. [Features](https://github.com/adinath-codes/Aurascript/tree/main#features)
 4. [Installation](https://github.com/adinath-codes/Aurascript/tree/main#installation)
-5. [Additional Guidelines](https://github.com/adinath-codes/Aurascript/tree/main#style-guide)
+5. [Style Guide](https://github.com/adinath-codes/Aurascript/tree/main#style-guide)
 
 # Showcase
-```text
+```cpp
 lowkey boss_hp becomes 15 fr
 lowkey my_aura becomes 0 fr
 
@@ -46,7 +44,11 @@ yap "GG NOCAP! BOSS DEFEATED." fr
 AuraScript was made for one reason:
 - *The silly factor*
 
-Basically i took some C++ code, and sillyfied it. Heres an example
+Actually 2 more are there ig,
+- *To be faster than Python*
+- *To teach you Gen-Z slang before programming syntax*
+
+Basically, I took some C++ code, and sillyfied it. Here's an example:
 ```cpp
 int health = 100;
 if (health > 0) {
@@ -63,7 +65,7 @@ health > 0 {
 ```
 
 Next, replace the variable declarations with absolute brainrot.
-```text
+```cpp
 // we still keep logic!!
 lowkey health becomes 100 fr
 health > 0 {
@@ -72,15 +74,15 @@ health > 0 {
 ```
 
 Lastly, rearrange everything and hide the exact control flow statements (`if` -> `sus`)
-```text
+```cpp
 lowkey health becomes 100 fr
 sus (health > 0) {
     lowkey health becomes health - 10 fr
 }
 ```
 
-You don't like not having an else keyword? Does that make you annoyed? Have a flop.
-```text
+You don't like not having an `else` keyword? Does that make you annoyed? Have a `flop`.
+```cpp
 lowkey health becomes 100 fr
 sus (health > 0) {
     lowkey health becomes health - 10 fr
@@ -90,7 +92,7 @@ sus (health > 0) {
 ```
 
 You want to add a loop? And do math? Your greed is insulting.
-```text
+```cpp
 lowkey health becomes 100 fr
 keepgrinding (health > 0) {
     lowkey health becomes health - 10 fr
@@ -98,28 +100,20 @@ keepgrinding (health > 0) {
 }
 ```
 
-If you're insecure about the size of your math operations, you should be, but also AuraScript is perfect for you!
-```text
-lowkey health becomes health ----- 10 fr
-```
-
 If you can't comprehend true and false booleans, you can use the `nocap` and `cap` keywords.
-```text
+```cpp
 lowkey is_alive becomes nocap fr
 ```
 
-"Oh but how does it know when one statement ends and one begins! I don't have my fucking semicolons!". This system works on hopes and dreams and is flawless. Just say `fr`.
-```text
-lowkey your_iq becomes 5 fr lowkey my_iq becomes 200 fr lowkey your_iq becomes your_iq - my_iq fr
-```
-
-But you can add extra `fr`s if you want i guess.
-```text
-lowkey your_iq becomes 5 fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr fr
+"Oh but how does it know when one statement ends and one begins! I don't have my semicolons!". This system works on hopes and dreams and is flawless. Just say `fr`.
+```cpp
+lowkey your_iq becomes 5 fr 
+lowkey my_iq becomes 200 fr 
+lowkey your_iq becomes your_iq - my_iq fr
 ```
 
 > [!NOTE]
-> `fr` can be used to guide the AST walker since its stupid and needs them to flush the node sometimes :(
+> `fr` is required to guide the AST walker to flush the statement node. Don't forget it!
 
 ## More examples
 Take some normal C++ code, for example a print statement.
@@ -130,7 +124,7 @@ std::cout << "My age is " << age << std::endl;
 (do everything above)
 
 And done! Ideal AuraScript code!
-```text
+```cpp
 lowkey age becomes 19 fr
 yap "My age is " fr
 yap age fr
@@ -149,72 +143,49 @@ These syntax aliases since you'll forget them somehow:
 
 ## Plagiarized
 Some sub-millisecond execution speed you can probably pull off (from C++):
-```text
-// this is one of the tests in this projects
+```cpp
+// this is one of the tests in this project
 keepgrinding (boss_hp > 0) {
     lowkey boss_hp becomes boss_hp - 1 fr
 }
 ```
 
 Builtins (from everywhere):
-```text
+```cpp
 yap "hello" fr
 ```
 
 Parentheses (invented by Lisp):
-```text
+```cpp
 (5 + 5)
-```
-
-`fr` (invented by Gen Z because i hate semicolons and i hate C++):
-```text
-// scroll up to the part about fr i hate talking about them more than i need too
 ```
 
 ## If Statements
 
-```text
+```cpp
 sus (thing) {
+    // true logic
 } flop {
+    // false logic
 }
 ```
 
-
 > [!NOTE]
->
-> `flop` is required due to technical limitations (AST branching).
-> Getting rid of `sus` is fine though. Wait no it isn't. ;)
+> If you want an "else if", you have to nest the `sus` inside the `flop` block. We don't do `elif` here.
 
 ## Variables and Printing
-also strings and ints share the same syntax so they have to be declared in their declaration
-```text
+Strings and ints share the same syntax, so they are dynamically typed at execution.
+```cpp
 // THIS IS FINE
 lowkey health becomes 100 fr
 lowkey slur_count becomes 9857 fr
 
-// THIS WONT WORK
-health = 100
-slur_count = 9001
-
-// I THINK REASSIGNING THEM IS FINE THOUGH
+// REASSIGNING THEM REUSES THE KEYWORD
 lowkey health becomes 90 fr
 ```
 
 Also from literally anywhere, builtins:
 `yap`: Uses C++'s memory-mapped string buffering to print instantly.
-
-## the AST walker is begging for its dear life
-Basically anytime you see something that doesn't need to be there you can probably remove it. Or add extra.
-```text
-// example: math operators
-lowkey my_math becomes 5 ++++++++++ 5 fr
-```
-
-## Voiding Values
-When you do logic, it's sub-millisecond. If you don't need the terminal to lag, just buffer it:
-```text
-yap "It prints instantly because I bypassed std::cout" fr
-```
 
 
 # Installation
@@ -223,22 +194,22 @@ yap "It prints instantly because I bypassed std::cout" fr
 > A Windows machine is recommended to use this project out of the box.
 > You do NOT need C++ installed if you use the precompiled binaries.
 
-## Windows
-1. Go to the latest release on GitHub.
+## Quick Start (Windows)
+1. Go to the **Releases** tab on GitHub.
 2. Download the `release.zip` archive.
-3. Extract the folder to a permanent location.
-4. run the setup.bat (double click it)
-5. **Option A: Run from current directory**
-	```powershell
-	aura examples\demo.aura
+3. Extract the folder to your desktop.
+4. Open Command Prompt inside that folder.
+5. double-click the `setup.bat` and run it , finally press enter to close when asked to `press any key...`
+6. Run the engine directly against the examples:
+   ```cmd
+   aura examples\demo.aura
    ```
 
-## Examples
-- `fibonacci.aura`: Calculate a target fibonacci number
+## Examples Included
+- `fibonacci.aura`: Calculate a target Fibonacci number
 - `factorial.aura`: Calculate a target factorial number
-- `timetable.aura`: Prints a 7 times table
-- `demo.aura`: A sub-millisecond boss fight simulation, this is the BIG one you SHOULD TEST
-
+- `timestable.aura`: Prints a 7 times table
+- `demo.aura`: A sub-millisecond boss fight simulation. **This is the BIG one you SHOULD TEST.**
 
 # Style Guide
-fuck around and find out or DM me from my profile
+Fuck around and find out or DM me from my profile.
