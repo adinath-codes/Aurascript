@@ -12,6 +12,13 @@ enum class TokenTypes {
   STACKED,
   RATIOED,
   GG,
+  // COMPARATOR: ==,>,<,<=,>=,!=
+  SAME_SAME,
+  GREATER_THAN,
+  LESSER_THAN,
+  GREATER_THAN_SAME,
+  LESSER_THAN_SAME,
+  NOT_SAME_SAME,
   // KEYWORDS: let,true,false,if,else,while,print,return,\n
   LOWKEY,
   SUS,
@@ -57,6 +64,7 @@ private:
   }
   void skipWhiteSpace();
   string readWord();
+  char peekChar();
   string readNumber();
   string readString();
   TokenTypes lookupWords(string identifier);

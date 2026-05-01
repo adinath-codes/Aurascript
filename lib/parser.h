@@ -99,6 +99,14 @@ public:
     switch (type) {
     case TokenTypes::BECOMES:
       return 5;
+
+    case TokenTypes::SAME_SAME:
+    case TokenTypes::GREATER_THAN:
+    case TokenTypes::LESSER_THAN:
+    case TokenTypes::GREATER_THAN_SAME:
+    case TokenTypes::LESSER_THAN_SAME:
+    case TokenTypes::NOT_SAME_SAME:
+      return 7;
     case TokenTypes::HASAURA:
     case TokenTypes::LOSEAURA:
       return 10;

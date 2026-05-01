@@ -39,7 +39,13 @@ void Lexer::readNextChar() {
   position = readPos;
   readPos++;
 };
-
+char Lexer::peekChar() {
+  if (readPos >= input.length()) {
+    return '\0'; // Return EOF if we are at the end of the file
+  } else {
+    return input[readPos]; // Just look at the next slot in the array!
+  }
+}
 string Lexer::readWord() {
   int startPos = position;
   while (isValidLetter(currChar)) {
@@ -85,11 +91,55 @@ Token Lexer::nextToken() {
   skipWhiteSpace();
   // DEFINING THE VALID TOKENS
   switch (currChar) {
-  case '=':
-    tok.type = TokenTypes::BECOMES;
-    tok.literal = "=";
+  case '!': {
+    if (peekChar() == '=') {
+      readNextChar();
+      tok.type = TokenTypes::NOT_SAME_SAME;
+      tok.literal = "!=";
+      break;
+    } else {
+      tok.type = TokenTypes::BADVIBES;
+      tok.literal = "!";
+      break;
+    }
+  }
+  case '=': {
+    if (peekChar() == '=') {
+      readNextChar();
+      tok.type = TokenTypes::SAME_SAME;
+      tok.literal = "==";
+    } else {
+      tok.type = TokenTypes::BECOMES;
+      tok.literal = "=";
+    }
     break;
+  }
+  case '>': {
+    if (peekChar() == '=') {
+      readNextChar();
+      tok.type = TokenTypes::GREATER_THAN_SAME;
+      tok.literal = ">=";
+      break;
+    } else {
 
+      tok.type = TokenTypes::GREATER_THAN;
+      tok.literal = ">";
+      break;
+    }
+  }
+  case '<': {
+    if (peekChar() == '=') {
+      readNextChar();
+      tok.type = TokenTypes::LESSER_THAN_SAME;
+      tok.literal = "<=";
+      break;
+    } else {
+
+      tok.type = TokenTypes::LESSER_THAN;
+      tok.literal = "<";
+      break;
+    }
+  } break;
   case '+':
     tok.type = TokenTypes::HASAURA;
     tok.literal = "+";

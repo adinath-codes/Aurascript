@@ -29,6 +29,36 @@ t_Obj_ptr evalMathExp(t_Obj_ptr left, TokenTypes opType, t_Obj_ptr right) {
       return GLOBAL_NULL_OBJ;
     }
     return std::make_shared<IntObject>(leftVal / rightVal);
+  case TokenTypes::SAME_SAME:
+    if (leftVal == rightVal)
+      return GLOBAL_TRUE_OBJ;
+    else
+      return GLOBAL_FALSE_OBJ;
+  case TokenTypes::GREATER_THAN:
+    if (leftVal > rightVal)
+      return GLOBAL_TRUE_OBJ;
+    else
+      return GLOBAL_FALSE_OBJ;
+  case TokenTypes::LESSER_THAN:
+    if (leftVal < rightVal)
+      return GLOBAL_TRUE_OBJ;
+    else
+      return GLOBAL_FALSE_OBJ;
+  case TokenTypes::GREATER_THAN_SAME:
+    if (leftVal >= rightVal)
+      return GLOBAL_TRUE_OBJ;
+    else
+      return GLOBAL_FALSE_OBJ;
+  case TokenTypes::LESSER_THAN_SAME:
+    if (leftVal <= rightVal)
+      return GLOBAL_TRUE_OBJ;
+    else
+      return GLOBAL_FALSE_OBJ;
+  case TokenTypes::NOT_SAME_SAME:
+    if (leftVal != rightVal)
+      return GLOBAL_TRUE_OBJ;
+    else
+      return GLOBAL_FALSE_OBJ;
   default:
     break;
   }
@@ -96,7 +126,7 @@ int main() {
   std::cout << "--- BOOTING ENGINE ---\n";
   Env env;
 
-  std::string srcCode = "lowkey base becomes 100 fr yap base + 50 fr";
+  std::string srcCode = "yap 10 + 5 > 10 fr yap 100 != 100 fr";
 
   std::cout << "[SOURCE CODE]:\n" << srcCode << "\n\n";
 
