@@ -20,7 +20,15 @@ static unordered_map<string, TokenTypes> keywords = {
     {"hasaura", TokenTypes::HASAURA},
     {"loseaura", TokenTypes::LOSEAURA},
     {"stacked", TokenTypes::STACKED},
-    {"ratioed", TokenTypes::RATIOED}};
+    {"ratioed", TokenTypes::RATIOED},
+    {"same_same", TokenTypes::SAME_SAME},
+    {"not_same_same", TokenTypes::NOT_SAME_SAME},
+    {"big_boy_than", TokenTypes::GREATER_THAN},
+    {"big_equal_boy_than", TokenTypes::GREATER_THAN_SAME},
+    {"small_boy_than", TokenTypes::LESSER_THAN},
+    {"small_equal_boy_than", TokenTypes::LESSER_THAN_SAME},
+
+};
 
 Lexer::Lexer(string sourceCode) {
   input = sourceCode;
@@ -173,7 +181,22 @@ Token Lexer::nextToken() {
     tok.literal = readString();
     tok.type = TokenTypes::STRING;
     return tok;
-
+  case '(':
+    tok.type = TokenTypes::LPAREN;
+    tok.literal = "(";
+    break;
+  case ')':
+    tok.type = TokenTypes::RPAREN;
+    tok.literal = ")";
+    break;
+  case '{':
+    tok.type = TokenTypes::LBRACE;
+    tok.literal = "{";
+    break;
+  case '}':
+    tok.type = TokenTypes::RBRACE;
+    tok.literal = "}";
+    break;
   default:
     if (isValidLetter(currChar)) {
       tok.literal = readWord();

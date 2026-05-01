@@ -143,7 +143,7 @@ public:
     }
     return leftNode;
   }
-
+  // LOWKEY BRANCH
   std::shared_ptr<LowkeyBranch> parseLowkeyBranch() {
     // lowkey -> identifier (aVar) -> becomes/'=' -> exp -> fr::: lowekey
     // aVarbecomes 56+89 fr
@@ -176,7 +176,7 @@ public:
     setNextToksToParse();
     return lkb;
   }
-
+  // YAP BRANCH
   std::shared_ptr<YapBranch> parseYapBranch() {
     auto yapNode = std::make_shared<YapBranch>();
     setNextToksToParse();
@@ -190,26 +190,122 @@ public:
 
     return yapNode;
   }
+  // BLOCK BRANCH
+  std::shared_ptr<BlockBranch> parseBlockBranch() {
+    auto block = std::make_shared<BlockBranch>();
+    setNextToksToParse();
+
+    while (currTok.type != TokenTypes::RBRACE &&
+           currTok.type != TokenTypes::GG) {
+
+      t_Obj_ptr stmt = parseStatement();
+
+      if (stmt != nullptr) {
+        block->statements.push_back(stmt);
+      } else {
+        setNextToksToParse();
+      }
+    }
+    return block;
+  }
+  // SUS BRANCH
+  std::shared_ptr<SusBranch> parseSusBranch() {
+    auto susNode = std::make_shared<SusBranch>();
+    setNextToksToParse();
+    if (currTok.type != TokenTypes::LPAREN) {
+      std::cout << "[SYNTAX BUSTED]: Bruh , you forgot the '(' after 'sus'"
+                << std::endl;
+      return nullptr;
+    }
+    setNextToksToParse();
+    susNode->condition = parseExp(0);
+    if (currTok.type != TokenTypes::RPAREN) {
+      std::cout << "[SYNTAX BUSTED]: Expected '{' to start the sus block"
+                << std::endl;
+      return nullptr;
+    }
+    susNode->ifBody = parseBlockBranch();
+    if (currTok.type == TokenTypes::RBRACE) {
+      setNextToksToParse();
+    }
+    if (currTok.type == TokenTypes::FLOP) {
+      setNextToksToParse();
+      if (currTok.type != TokenTypes::LBRACE) {
+        std::cout << "[SYNTAX BUSTED]: Expected '{' after 'flop'.\n";
+        return nullptr;
+      }
+      susNode->elseBody = parseBlockBranch();
+      if (currTok.type == TokenTypes::RBRACE) {
+        setNextToksToParse();
+      }
+    }
+    return susNode;
+  }
+  // GRINDING BRANCH
+  std::shared_ptr<GrindingBranch> parseGrindingBranch() {
+    auto grindNode = std::make_shared<GrindingBranch>();
+    setNextToksToParse();
+    if (currTok.type != TokenTypes::LPAREN) {
+      std::cout << "[SYNTAX BUSTED]: '(' is missing in the conditional part of "
+                   "the grinding loop"
+                << std::endl;
+      return nullptr;
+    }
+    setNextToksToParse();
+    grindNode->condition = parseExp(0);
+    if (currTok.type != TokenTypes::RPAREN) {
+      std::cout << "[SYNTAX BUSTED]: ')' is missing in the conditional part of "
+                   "the grinding loop"
+                << std::endl;
+      return nullptr;
+    }
+    setNextToksToParse();
+
+    if (currTok.type != TokenTypes::LBRACE) {
+      std::cout << "[SYNTAX BUSTED]: '{' is missing in the conditional part of "
+                   "the grinding loop"
+                << std::endl;
+      return nullptr;
+    }
+
+    grindNode->body = parseBlockBranch();
+    if (currTok.type != TokenTypes::RBRACE) {
+      std::cout << "[SYNTAX BUSTED]: '}' is missing in the conditional part of "
+                   "the grinding loop"
+                << std::endl;
+      return nullptr;
+    }
+    return grindNode;
+  }
+  t_Obj_ptr parseStatement() {
+    switch (currTok.type) {
+    case TokenTypes::LOWKEY:
+      return parseLowkeyBranch();
+
+    case TokenTypes::YAP:
+      return parseYapBranch();
+
+    case TokenTypes::SUS:
+      return parseSusBranch();
+
+    case TokenTypes::KEEPGRINDING:
+      return parseGrindingBranch();
+
+    default:
+      return nullptr;
+    }
+  }
+
   t_TreeVect parseProgram() {
     while (currTok.type != TokenTypes::GG) {
-      switch (currTok.type) {
-      case TokenTypes::LOWKEY: {
-        std::shared_ptr<LowkeyBranch> lkBranchPtr = parseLowkeyBranch();
-        if (lkBranchPtr != nullptr) {
-          branchedTree.push_back(lkBranchPtr);
-        }
-        break;
-      }
-      case TokenTypes::YAP: {
-        t_Obj_ptr yapN = parseYapBranch();
-        if (yapN != nullptr) {
-          branchedTree.push_back(yapN);
-        }
-        break;
-      }
-      default:
+
+      // Same exact logic! Just route it.
+      t_Obj_ptr stmt = parseStatement();
+
+      if (stmt != nullptr) {
+        branchedTree.push_back(stmt);
+      } else {
         setNextToksToParse();
-        break;
       }
     }
     return branchedTree;

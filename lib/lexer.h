@@ -32,6 +32,12 @@ enum class TokenTypes {
   NOCAP,
   CAP,
   STRING,
+  // BRACKETS: ( , ) ,{ , }
+  LPAREN,
+  RPAREN,
+  LBRACE,
+  RBRACE,
+
   // OTHERS: ;,identifier,numbers,EOF, ILLEGAL(none of them)
   FR,
   IDENTIFIER,

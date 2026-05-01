@@ -1,0 +1,22 @@
+lowkey boss_hp becomes 15 fr
+lowkey my_aura becomes 0 fr
+
+yap "--- FINAL BOSS FIGHT INITIATED ---" fr
+
+keepgrinding (boss_hp > 0) {
+    sus (my_aura > 5) {
+        yap "CRITICAL STRIKE!" fr
+        lowkey boss_hp becomes boss_hp - 4 fr
+        lowkey my_aura becomes 0 fr
+    } flop {
+        yap "Basic Attack..." fr
+        lowkey boss_hp becomes boss_hp - 2 fr
+        lowkey my_aura becomes my_aura + 3 fr
+    }
+    
+    yap "Boss HP remaining:" fr
+    yap boss_hp fr
+    yap "---" fr
+}
+
+yap "GG NOCAP! BOSS DEFEATED." fr

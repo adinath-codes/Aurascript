@@ -46,10 +46,34 @@ public:
   std::string viewValue() override { return "yap " + exp->viewValue() + " fr"; }
 };
 
+// BLOCK STATEMENT (hold instructions)
+class BlockBranch : public Statements {
+public:
+  std::vector<std::shared_ptr<ObjectOutline>> statements;
+  OBJECT_TYPES type() override { return OBJECT_TYPES::BLOCK_STATEMENT; }
+  std::string viewValue() { return "{...BLOCK OF CODE...}"; }
+};
+
 // CONDITIONAL STATEMENT
+class SusBranch : public Statements {
+public:
+  std::shared_ptr<ObjectOutline> condition;
+  std::shared_ptr<BlockBranch> ifBody;
+  std::shared_ptr<BlockBranch> elseBody;
+
+  OBJECT_TYPES type() override { return OBJECT_TYPES::SUS_STATEMENT; }
+  std::string viewValue() override { return "sus (...) { ... }"; }
+};
 
 // LOOPING STATEMENT
+class GrindingBranch : public Statements {
+public:
+  std::shared_ptr<ObjectOutline> condition;
+  std::shared_ptr<BlockBranch> body;
 
+  OBJECT_TYPES type() override { return OBJECT_TYPES::GRINDING_STATEMENT; }
+  std::string viewValue() override { return "{...WHILE LOOP RUNNING...}"; }
+};
 // JUMP STATEMENT
 class AST {
 

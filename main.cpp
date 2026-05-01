@@ -1,6 +1,9 @@
 #include "lib/env.h"
 #include "lib/parser.h"
+#include <chrono>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 const std::shared_ptr<NullObject> GLOBAL_NULL_OBJ =
@@ -87,6 +90,20 @@ t_Obj_ptr Evaluator(t_Obj_ptr node, Env &env) {
     return savedVal;
   }
 
+  if (node->type() == OBJECT_TYPES::INFIX_OBJ) {
+    auto infix = std::dynamic_pointer_cast<InfixNode>(node);
+    t_Obj_ptr left = Evaluator(infix->Left, env);
+    t_Obj_ptr right = Evaluator(infix->Right, env);
+
+    if (left->type() == OBJECT_TYPES::INTEGER_OBJ &&
+        right->type() == OBJECT_TYPES::INTEGER_OBJ) {
+      return evalMathExp(left, infix->operatorType, right);
+    } else {
+      std::cout << "[RUNTIME ERROR]: Math operations require two numbers.\n";
+      return GLOBAL_NULL_OBJ;
+    }
+  }
+
   if (node->type() == OBJECT_TYPES::LOWKEY_STATEMENT) {
     auto lkBranch = std::dynamic_pointer_cast<LowkeyBranch>(node);
     t_Obj_ptr val = Evaluator(lkBranch->exp, env);
@@ -105,67 +122,81 @@ t_Obj_ptr Evaluator(t_Obj_ptr node, Env &env) {
     return GLOBAL_NULL_OBJ;
   }
 
-  if (node->type() == OBJECT_TYPES::INFIX_OBJ) {
-    auto infix = std::dynamic_pointer_cast<InfixNode>(node);
-    t_Obj_ptr left = Evaluator(infix->Left, env);
-    t_Obj_ptr right = Evaluator(infix->Right, env);
-
-    if (left->type() == OBJECT_TYPES::INTEGER_OBJ &&
-        right->type() == OBJECT_TYPES::INTEGER_OBJ) {
-      return evalMathExp(left, infix->operatorType, right);
-    } else {
-      std::cout << "[RUNTIME ERROR]: Math operations require two numbers.\n";
-      return GLOBAL_NULL_OBJ;
+  if (node->type() == OBJECT_TYPES::BLOCK_STATEMENT) {
+    auto block = std::dynamic_pointer_cast<BlockBranch>(node);
+    for (const auto &Statement : block->statements) {
+      Evaluator(Statement, env);
     }
+    return GLOBAL_NULL_OBJ;
   }
 
+  if (node->type() == OBJECT_TYPES::SUS_STATEMENT) {
+    auto susNode = std::dynamic_pointer_cast<SusBranch>(node);
+    t_Obj_ptr condResult = Evaluator(susNode->condition, env);
+    if (condResult == GLOBAL_TRUE_OBJ) {
+      Evaluator(susNode->ifBody, env);
+    } else {
+      Evaluator(susNode->elseBody, env);
+    }
+    return GLOBAL_NULL_OBJ;
+  }
+
+  if (node->type() == OBJECT_TYPES::GRINDING_STATEMENT) {
+    auto grindNode = std::dynamic_pointer_cast<GrindingBranch>(node);
+    while (true) {
+
+      t_Obj_ptr condResult = Evaluator(grindNode->condition, env);
+
+      if (condResult == nullptr) {
+        std::cout << "[RUNTIME BUSTED]: Loop condition evaluated to a ghost "
+                     "pointer.\n";
+        break;
+      }
+
+      if (condResult->viewValue() != GLOBAL_TRUE_OBJ->viewValue()) {
+        break;
+      }
+      Evaluator(grindNode->body, env);
+    }
+
+    return GLOBAL_NULL_OBJ;
+  }
   return GLOBAL_NULL_OBJ;
 }
 
-int main() {
-  std::cout << "--- BOOTING ENGINE ---\n";
+int main(int argc, char *argv[]) {
+  if (argc < 2) {
+    std::cout << "HELP:\n"
+              << "use aura <filename>.aura to run the file" << std::endl;
+    return 0;
+  }
+  std::string filename = argv[1];
+  std::ifstream file(filename);
+  if (!file.is_open()) {
+    std::cout << "[FATALITY]: could not find/open the file named" << filename
+              << std::endl;
+    return 0;
+  }
+  std::stringstream buffer;
+  buffer << file.rdbuf();
+  std::string srcCode = buffer.str();
+
   Env env;
-
-  std::string srcCode = "yap 10 + 5 > 10 fr yap 100 != 100 fr";
-
-  std::cout << "[SOURCE CODE]:\n" << srcCode << "\n\n";
-
   Parser par(srcCode);
   t_TreeVect parsedCode = par.parseProgram();
-
-  std::cout << "--- PARSED CODE ---\n\n";
+  // STARTING TIME AFTER PARSING (since most langauges like python do
+  // pre-warmed) inorder to give accurate RUNTIME between python and auraScript
+  auto startTime = std::chrono::high_resolution_clock::now();
   for (const auto &branch : parsedCode) {
-    std::cout << "---------------------------------\n";
-
-    // 1. THE X-RAY SCANNER (Check what type of node this is)
-    if (branch->type() == OBJECT_TYPES::LOWKEY_STATEMENT) {
-      auto lkBranch = std::dynamic_pointer_cast<LowkeyBranch>(branch);
-      std::cout << "[NODE TYPE]: LOWKEY_BRANCH\n"
-                << "[IDENTIFIER]: " << lkBranch->ident << "\n"
-                << "[INNER MATH]: " << lkBranch->exp->viewValue() << "\n";
-    } else if (branch->type() == OBJECT_TYPES::YAP_STATEMENT) {
-      auto yapBranch = std::dynamic_pointer_cast<YapBranch>(branch);
-      std::cout << "[NODE TYPE]: YAP_STATEMENT\n"
-                << "[INNER EXP]: " << yapBranch->exp->viewValue() << "\n";
-    }
-
-    // 2. RUN THE ENGINE
-    std::cout << "\n[EVALUATOR OUTPUT]:\n";
-    Evaluator(branch, env); // If it's a yap statement, it prints here!
-
-    // 3. CHECK THE RAM (Only if we just saved a variable)
-    if (branch->type() == OBJECT_TYPES::LOWKEY_STATEMENT) {
-      auto lkBranch = std::dynamic_pointer_cast<LowkeyBranch>(branch);
-      t_Obj_ptr savedVal = env.get(lkBranch->ident);
-      if (savedVal != nullptr) {
-        std::cout << "\n[RAM STATE]: " << lkBranch->ident << " = "
-                  << savedVal->viewValue() << "\n";
-      }
-    }
-
-    std::cout << "---------------------------------\n\n";
+    Evaluator(branch, env);
   }
+  auto endTime = std::chrono::high_resolution_clock::now();
 
-  std::cout << "--- ENGINE SHUTDOWN ---\n";
+  auto TotalRunTime = endTime - startTime;
+  auto msRunTime =
+      std::chrono::duration_cast<std::chrono::milliseconds>(TotalRunTime)
+          .count();
+  std::cout << "\n\n>>> PROGRAM ENDED:\n"
+            << "TOTAL TIME TAKES:" << msRunTime << "ms" << std::endl;
   return 0;
 }
